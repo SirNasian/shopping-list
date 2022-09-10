@@ -34,7 +34,7 @@ const App = () => {
 				}}
 			>
 				<Paper>
-					<Box sx={{ margin: "12rem" }}>
+					<Box sx={{ margin: "4rem" }}>
 						<IconButton onClick={toggleTheme}>
 							{theme.palette.mode === "light" ? (
 								<LightModeIcon />
