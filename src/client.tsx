@@ -56,7 +56,7 @@ const App = () => {
 						<ShoppingList />
 					</Box>
 					<Divider />
-					<Box>
+					<Box sx={{ padding: "0.5rem" }}>
 						<IconButton onClick={toggleTheme}>
 							{theme.palette.mode === "light" ? (
 								<LightModeIcon />
