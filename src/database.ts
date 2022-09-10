@@ -7,6 +7,12 @@ const dbPool = mariadb.createPool({
 	database: process.env.DB_NAME ?? "data",
 });
 
+export interface Item {
+	ID: number;
+	Name: string;
+	Obtained: boolean;
+}
+
 export const setup = async (): Promise<void> => {
 	return dbPool.execute(`
 		CREATE TABLE IF NOT EXISTS \`items\` (
@@ -18,6 +24,10 @@ export const setup = async (): Promise<void> => {
 	`);
 };
 
+export const getItems = async (): Promise<Item[]> =>
+	await dbPool.query("SELECT * FROM `items`;");
+
 export default {
+	getItems: getItems,
 	setup: setup,
 };
