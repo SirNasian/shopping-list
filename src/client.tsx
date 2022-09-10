@@ -2,8 +2,10 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
 
-import LightModeIcon from "@mui/icons-material/LightMode";
+import AddIcon from "@mui/icons-material/Add";
+import ClearAllIcon from "@mui/icons-material/ClearAll";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -56,7 +58,13 @@ const App = () => {
 						<ShoppingList />
 					</Box>
 					<Divider />
-					<Box sx={{ padding: "0.5rem" }}>
+					<Box
+						sx={{
+							display: "flex",
+							justifyContent: "space-between",
+							padding: "0.5rem",
+						}}
+					>
 						<IconButton onClick={toggleTheme}>
 							{theme.palette.mode === "light" ? (
 								<LightModeIcon />
@@ -64,6 +72,14 @@ const App = () => {
 								<DarkModeIcon />
 							)}
 						</IconButton>
+						<Box>
+							<IconButton>
+								<AddIcon />
+							</IconButton>
+							<IconButton>
+								<ClearAllIcon />
+							</IconButton>
+						</Box>
 					</Box>
 				</Paper>
 			</Box>
