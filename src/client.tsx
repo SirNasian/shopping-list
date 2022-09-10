@@ -2,16 +2,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
 
-import AddIcon from "@mui/icons-material/Add";
-import ClearAllIcon from "@mui/icons-material/ClearAll";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-
 import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
 
 import ShoppingList from "./components/ShoppingList";
 
@@ -50,37 +42,7 @@ const App = () => {
 						maxWidth: "100%",
 					}}
 				>
-					<Typography variant="h4" sx={{ margin: "1rem", textAlign: "center" }}>
-						Shopping List
-					</Typography>
-					<Divider />
-					<Box sx={{ overflowY: "scroll" }}>
-						<ShoppingList />
-					</Box>
-					<Divider />
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "space-between",
-							padding: "0.5rem",
-						}}
-					>
-						<IconButton onClick={toggleTheme}>
-							{theme.palette.mode === "light" ? (
-								<LightModeIcon />
-							) : (
-								<DarkModeIcon />
-							)}
-						</IconButton>
-						<Box>
-							<IconButton>
-								<AddIcon />
-							</IconButton>
-							<IconButton>
-								<ClearAllIcon />
-							</IconButton>
-						</Box>
-					</Box>
+					<ShoppingList onToggleTheme={toggleTheme} theme={theme} />
 				</Paper>
 			</Box>
 		</ThemeProvider>
