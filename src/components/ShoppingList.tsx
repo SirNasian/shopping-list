@@ -184,7 +184,19 @@ export const ShoppingList = ({
 	};
 
 	const editorModalSubmit = (itemName: string) => {
-		// TODO: implement this
+		window.fetch("/api/items", {
+			method: "post",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify([
+				{
+					ID: selectedItem ? selectedItem.ID : -1,
+					Name: itemName,
+				},
+			]),
+		});
 		console.log(itemName);
 		setEditorOpen(false);
 	};
