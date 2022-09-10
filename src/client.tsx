@@ -1,15 +1,21 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { createTheme, Theme, ThemeProvider } from "@mui/material/styles";
+
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+
+import ShoppingList from "./components/ShoppingList";
 
 const App = () => {
 	const [theme, setTheme] = React.useState<Theme>(
-		createTheme({ palette: { mode: "light" } })
+		createTheme({ palette: { mode: "dark" } })
 	);
 
 	const toggleTheme = () => {
@@ -31,10 +37,26 @@ const App = () => {
 					display: "flex",
 					height: "100%",
 					justifyContent: "center",
+					width: "100%",
 				}}
 			>
-				<Paper>
-					<Box sx={{ margin: "4rem" }}>
+				<Paper
+					sx={{
+						display: "flex",
+						flexDirection: "column",
+						maxHeight: "100%",
+						maxWidth: "100%",
+					}}
+				>
+					<Typography variant="h4" sx={{ margin: "1rem", textAlign: "center" }}>
+						Shopping List
+					</Typography>
+					<Divider />
+					<Box sx={{ overflowY: "scroll" }}>
+						<ShoppingList />
+					</Box>
+					<Divider />
+					<Box>
 						<IconButton onClick={toggleTheme}>
 							{theme.palette.mode === "light" ? (
 								<LightModeIcon />
