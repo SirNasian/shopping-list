@@ -5,6 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
+import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -24,7 +25,12 @@ export const ShoppingList = (): JSX.Element => {
 			.then((items) => setItems(items));
 	}, []);
 
-	if (!items) return <Box>Loading...</Box>;
+	if (!items)
+		return (
+			<Box sx={{ display: "flex", justifyContent: "center", padding: "1rem" }}>
+				<CircularProgress />
+			</Box>
+		);
 
 	return (
 		<TableContainer>
@@ -37,7 +43,9 @@ export const ShoppingList = (): JSX.Element => {
 							</TableCell>
 							<TableCell>
 								<Box
-									sx={{ textDecoration: item.Obtained ? "line-through" : "auto" }}
+									sx={{
+										textDecoration: item.Obtained ? "line-through" : "auto",
+									}}
 								>
 									{item.Name}
 								</Box>
