@@ -1,41 +1,43 @@
-const path = require('path');
+const path = require("path");
 module.exports = [
 	{
-		entry: './src/client.tsx',
+		target: "web",
+		entry: "./src/client.tsx",
 		module: {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					use: 'ts-loader',
+					use: "ts-loader",
 					exclude: /node_modules/,
 				},
 			],
 		},
 		resolve: {
-			extensions: ['.tsx', '.ts', '.js'],
+			extensions: [".tsx", ".ts", ".js"],
 		},
 		output: {
-			filename: 'client.js',
-			path: path.resolve(__dirname, 'public/js'),
+			filename: "client.js",
+			path: path.resolve(__dirname, "public/js"),
 		},
 	},
 	{
-		entry: './src/server.ts',
+		target: "node",
+		entry: "./src/server.ts",
 		module: {
 			rules: [
 				{
 					test: /\.tsx?$/,
-					use: 'ts-loader',
+					use: "ts-loader",
 					exclude: /node_modules/,
 				},
 			],
 		},
 		resolve: {
-			extensions: ['.ts', '.js'],
+			extensions: [".ts", ".js"],
 		},
 		output: {
-			filename: 'server.js',
-			path: path.resolve(__dirname, 'dist'),
+			filename: "server.js",
+			path: path.resolve(__dirname, "dist"),
 		},
 	}
 ];
