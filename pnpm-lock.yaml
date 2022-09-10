@@ -1,16 +1,22 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@types/react': ^18.0.18
+  '@types/react-dom': ^18.0.6
   '@webpack-cli/generators': ^2.5.0
-  prettier: ^2.7.1
+  react: ^18.2.0
+  react-dom: ^18.2.0
   ts-loader: ^9.3.1
   typescript: ^4.8.3
   webpack: ^5.74.0
   webpack-cli: ^4.10.0
 
 devDependencies:
-  '@webpack-cli/generators': 2.5.0_y7pjcgtgsscy67dcqc6n4ct7de
-  prettier: 2.7.1
+  '@types/react': 18.0.18
+  '@types/react-dom': 18.0.6
+  '@webpack-cli/generators': 2.5.0_webpack@5.74.0
+  react: 18.2.0
+  react-dom: 18.2.0_react@18.2.0
   ts-loader: 9.3.1_kb3egcnme7w23lfa5xodfjfhge
   typescript: 4.8.3
   webpack: 5.74.0_webpack-cli@4.10.0
@@ -344,10 +350,32 @@ packages:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
     dev: true
 
+  /@types/prop-types/15.7.5:
+    resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+    dev: true
+
+  /@types/react-dom/18.0.6:
+    resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
+    dependencies:
+      '@types/react': 18.0.18
+    dev: true
+
+  /@types/react/18.0.18:
+    resolution: {integrity: sha512-6hI08umYs6NaiHFEEGioXnxJ+oEhY3eRz8VCUaudZmGdtvPviCJB8mgaMxaDWAdPSYd4eFavrPk2QIolwbLYrg==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.1.0
+    dev: true
+
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
       '@types/node': 18.7.16
+    dev: true
+
+  /@types/scheduler/0.16.2:
+    resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
     dev: true
 
   /@types/vinyl/2.0.6:
@@ -473,7 +501,7 @@ packages:
       webpack-cli: 4.10.0_tgijosa5elcqvekttf7wvxrynq
     dev: true
 
-  /@webpack-cli/generators/2.5.0_y7pjcgtgsscy67dcqc6n4ct7de:
+  /@webpack-cli/generators/2.5.0_webpack@5.74.0:
     resolution: {integrity: sha512-0KGSL4TQSQ4ajyRKcq6dcL9TRcqbBtmhpF8mMrt0jf7kmC6WC1S201xznxO6q1bAoy5eUxtqikkhPwUSR0Zghg==}
     peerDependencies:
       prettier: '*'
@@ -482,7 +510,6 @@ packages:
       prettier:
         optional: true
     dependencies:
-      prettier: 2.7.1
       webpack: 5.74.0_webpack-cli@4.10.0
       webpack-cli: 4.10.0_tgijosa5elcqvekttf7wvxrynq
       yeoman-environment: 3.10.0
@@ -1161,6 +1188,10 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /csstype/3.1.0:
+    resolution: {integrity: sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==}
     dev: true
 
   /dargs/6.1.0:
@@ -2506,6 +2537,13 @@ packages:
       is-unicode-supported: 0.1.0
     dev: true
 
+  /loose-envify/1.4.0:
+    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
+    hasBin: true
+    dependencies:
+      js-tokens: 4.0.0
+    dev: true
+
   /lowercase-keys/1.0.1:
     resolution: {integrity: sha512-G2Lj61tXDnVFFOi8VZds+SoQjtQC3dgokKdDG2mTm1tx4m50NUHBOZSBwQQHyy0V12A0JTG4icfZQH+xPyh8VA==}
     engines: {node: '>=0.10.0'}
@@ -3385,12 +3423,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-    dev: true
-
   /pretty-bytes/5.6.0:
     resolution: {integrity: sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==}
     engines: {node: '>=6'}
@@ -3450,6 +3482,23 @@ packages:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
       safe-buffer: 5.2.1
+    dev: true
+
+  /react-dom/18.2.0_react@18.2.0:
+    resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
+    peerDependencies:
+      react: ^18.2.0
+    dependencies:
+      loose-envify: 1.4.0
+      react: 18.2.0
+      scheduler: 0.23.0
+    dev: true
+
+  /react/18.2.0:
+    resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
     dev: true
 
   /read-chunk/3.2.0:
@@ -3666,6 +3715,12 @@ packages:
 
   /safer-buffer/2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
+    dev: true
+
+  /scheduler/0.23.0:
+    resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
+    dependencies:
+      loose-envify: 1.4.0
     dev: true
 
   /schema-utils/3.1.1:
@@ -4397,7 +4452,7 @@ packages:
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
       '@webpack-cli/configtest': 1.2.0_5v66e2inugklgvlh4huuavolfq
-      '@webpack-cli/generators': 2.5.0_y7pjcgtgsscy67dcqc6n4ct7de
+      '@webpack-cli/generators': 2.5.0_webpack@5.74.0
       '@webpack-cli/info': 1.5.0_webpack-cli@4.10.0
       '@webpack-cli/serve': 1.7.0_webpack-cli@4.10.0
       colorette: 2.0.19
