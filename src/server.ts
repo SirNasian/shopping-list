@@ -1,3 +1,4 @@
+import express from "express";
 import mariadb from "mariadb";
 
 const dbPool = mariadb.createPool({
@@ -15,3 +16,7 @@ dbPool.execute(`
 		PRIMARY KEY (\`ID\`)
 	)
 `);
+
+const server = express();
+server.use(express.static("public"));
+server.listen(process.env.WEB_PORT ?? "3000");
