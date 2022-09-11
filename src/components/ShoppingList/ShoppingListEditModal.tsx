@@ -20,6 +20,8 @@ export const ShoppingListEditModal = ({
 }) => {
 	const [text, setText] = React.useState<string>(defaultText);
 
+	React.useEffect(() => setText(defaultText), [defaultText]);
+
 	const submit = (): void => {
 		onSubmit(text);
 		setText("");
