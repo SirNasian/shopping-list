@@ -14,4 +14,8 @@ server.post("/api/items", async (req, res) => {
 	// TODO: send back slightly more useful information
 	res.sendStatus((await database.updateItems(req.body)) ? 200 : 500);
 });
+server.delete("/api/items/:itemID", async (req, res) => {
+	// TODO: send back slightly more useful information
+	res.sendStatus((await database.deleteItem(Number(req.params.itemID))) ? 200 : 500);
+});
 server.listen(process.env.WEB_PORT ?? "3000");

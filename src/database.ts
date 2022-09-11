@@ -13,6 +13,11 @@ export interface Item {
 	Obtained: boolean;
 }
 
+export const deleteItem = async (itemID: number): Promise<boolean> => {
+	await dbPool.execute(`DELETE FROM \`items\` WHERE \`ID\` = ${itemID}`);
+	return true;
+};
+
 export const getItems = async (): Promise<Item[]> =>
 	await dbPool.query("SELECT * FROM `items`;");
 
@@ -51,6 +56,7 @@ export const updateItems = async (items: Item[]): Promise<boolean> => {
 };
 
 export default {
+	deleteItem: deleteItem,
 	getItems: getItems,
 	setup: setup,
 	updateItems: updateItems,

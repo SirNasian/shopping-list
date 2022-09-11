@@ -30,8 +30,13 @@ export const ShoppingList = ({
 	}, []);
 
 	const clearItems = () => {
-		// TODO: implement this
-		console.log("TODO: clearItems");
+		items
+			.filter((item) => item.Obtained)
+			.forEach((item) =>
+				window.fetch(`/api/items/${item.ID}`, { method: "delete" })
+			);
+		// TODO: replace this local update with update over websockets
+		setItems(items.filter((item) => !item.Obtained));
 	};
 
 	const editItem = (item: Item, buttonCaption: string) => {
@@ -76,8 +81,9 @@ export const ShoppingList = ({
 	};
 
 	const deleteItem = (item: Item) => {
-		// TODO: implement this
-		console.log(item);
+		window.fetch(`/api/items/${item.ID}`, { method: "delete" });
+		// TODO: replace this local update with update over websockets
+		setItems(items.filter((oldItem) => item.ID !== oldItem.ID));
 	};
 
 	return (
