@@ -33,7 +33,10 @@ export const ShoppingListTable = ({
 					{items.map((item) => (
 						<TableRow key={item.ID}>
 							<TableCell>
-							<Checkbox checked={Boolean(item.Obtained)} onChange={(event) => onCheck(item, event.target.checked)} />
+								<Checkbox
+									checked={Boolean(item.Obtained)}
+									onChange={(event) => onCheck(item, event.target.checked)}
+								/>
 							</TableCell>
 							<TableCell>
 								<Box
