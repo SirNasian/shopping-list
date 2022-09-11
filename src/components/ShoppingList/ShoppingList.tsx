@@ -54,7 +54,24 @@ export const ShoppingList = ({
 				},
 			]),
 		});
-		console.log(itemName);
+		// TODO: replace this local update with update over websockets
+		setItems(
+			selectedItem
+				? [...items].map((item) => ({
+						...item,
+						Name: item === selectedItem ? itemName : item.Name,
+				  }))
+				: [
+						...items,
+						{
+							ID:
+								items.reduce((id, item) => (item.ID > id ? item.ID : id), 0) +
+								1,
+							Name: itemName,
+							Obtained: false,
+						},
+				  ]
+		);
 		setEditorOpen(false);
 	};
 
