@@ -17,10 +17,12 @@ import { Item } from "../../database";
 
 export const ShoppingListTable = ({
 	items,
+	onCheck,
 	onDelete,
 	onEdit,
 }: {
 	items: Item[];
+	onCheck: (item: Item, checked: boolean) => void;
 	onDelete: (item: Item) => void;
 	onEdit: (item: Item) => void;
 }): JSX.Element =>
@@ -31,7 +33,7 @@ export const ShoppingListTable = ({
 					{items.map((item) => (
 						<TableRow key={item.ID}>
 							<TableCell>
-								<Checkbox checked={Boolean(item.Obtained)} />
+							<Checkbox checked={Boolean(item.Obtained)} onChange={(event) => onCheck(item, event.target.checked)} />
 							</TableCell>
 							<TableCell>
 								<Box

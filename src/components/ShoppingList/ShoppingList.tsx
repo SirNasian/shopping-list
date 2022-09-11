@@ -39,6 +39,34 @@ export const ShoppingList = ({
 		setItems(items.filter((item) => !item.Obtained));
 	};
 
+	const checkItem = (item: Item, checked: boolean) => {
+		window.fetch("/api/items", {
+			method: "post",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify([
+				{
+					ID: item.ID,
+					Obtained: checked,
+				},
+			]),
+		});
+		// TODO: replace this local update with update over websockets
+		setItems(
+			items.map((oldItem) =>
+				oldItem.ID === item.ID ? { ...oldItem, Obtained: checked } : oldItem
+			)
+		);
+	};
+
+	const deleteItem = (item: Item) => {
+		window.fetch(`/api/items/${item.ID}`, { method: "delete" });
+		// TODO: replace this local update with update over websockets
+		setItems(items.filter((oldItem) => oldItem.ID !== item.ID));
+	};
+
 	const editItem = (item: Item, buttonCaption: string) => {
 		setSelectedItem(item);
 		setEditorButtonCaption(buttonCaption);
@@ -80,12 +108,6 @@ export const ShoppingList = ({
 		setEditorOpen(false);
 	};
 
-	const deleteItem = (item: Item) => {
-		window.fetch(`/api/items/${item.ID}`, { method: "delete" });
-		// TODO: replace this local update with update over websockets
-		setItems(items.filter((oldItem) => item.ID !== oldItem.ID));
-	};
-
 	return (
 		<React.Fragment>
 			<Typography variant="h4" sx={{ margin: "1rem", textAlign: "center" }}>
@@ -94,6 +116,7 @@ export const ShoppingList = ({
 			<Divider />
 			<ShoppingListTable
 				items={items}
+				onCheck={checkItem}
 				onEdit={(item) => editItem(item, "Update")}
 				onDelete={deleteItem}
 			/>

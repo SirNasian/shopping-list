@@ -44,7 +44,7 @@ export const updateItems = async (items: Item[]): Promise<boolean> => {
 			return `
 			UPDATE \`items\` SET
 			${item.Name === undefined ? `` : `\`Name\` = "${item.Name}"`}
-			${item.Obtained === undefined ? `` : `\`Obtained\` = "${item.Obtained}"`}
+			${item.Obtained === undefined ? `` : `\`Obtained\` = ${item.Obtained ? 1 : 0}`}
 			WHERE \`ID\` = ${item.ID}
 		`;
 	});
