@@ -67,11 +67,15 @@ export const ShoppingList = ({
 					: updateItems({ action: undefined, item: undefined })
 			)
 			.catch((error) => onError(error.message));
-		ws.current = new WebSocket(`ws://${window.location.hostname}:3001`);
-		ws.current.onmessage = (event: { data: string }) =>
-			updateItems(JSON.parse(event.data));
-		ws.current.onopen = () => setConnected(true);
-		ws.current.onclose = () => setConnected(false);
+		window.fetch("/api/websocket_port").then(async (res) => {
+			ws.current = new WebSocket(
+				`ws://${window.location.hostname}:${await res.text()}`
+			);
+			ws.current.onmessage = (event: { data: string }) =>
+				updateItems(JSON.parse(event.data));
+			ws.current.onopen = () => setConnected(true);
+			ws.current.onclose = () => setConnected(false);
+		});
 		return () => ws.current.close();
 	}, []);
 

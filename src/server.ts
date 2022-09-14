@@ -73,4 +73,7 @@ server.delete("/api/items/:itemID", async (req, res) => {
 	// TODO: send back slightly more useful information
 	res.sendStatus(success ? 200 : 500);
 });
+server.get("/api/websocket_port", (_req, res) =>
+	res.send(process.env.WS_PORT ?? "3001")
+);
 server.listen(process.env.WEB_PORT ?? 3000);
