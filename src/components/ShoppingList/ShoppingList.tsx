@@ -12,10 +12,12 @@ import WebSocketMessage from "../../interfaces/WebSocketMessage";
 
 export const ShoppingList = ({
 	onError,
+	onSuccess,
 	onToggleTheme,
 	theme,
 }: {
 	onError: (msg: string) => void;
+	onSuccess: (msg: string) => void;
 	onToggleTheme: () => void;
 	theme: Theme;
 }): JSX.Element => {
@@ -78,6 +80,11 @@ export const ShoppingList = ({
 		});
 		return () => ws.current.close();
 	}, []);
+
+	React.useEffect(() => {
+		if (connected) onSuccess("Connected to server!");
+		else if (items) onError("Connection to server lost!");
+	}, [connected]);
 
 	const clearItems = () => {
 		items

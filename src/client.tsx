@@ -36,6 +36,15 @@ const App = () => {
 		});
 	};
 
+	const displaySuccessToast = (message: string, duration = 3000): void => {
+		setToastState({
+			open: true,
+			duration: duration,
+			severity: "success",
+			message: message,
+		});
+	};
+
 	const toggleTheme = () => {
 		setTheme(
 			createTheme({
@@ -68,6 +77,7 @@ const App = () => {
 				>
 					<ShoppingList
 						onError={(msg) => displayErrorToast(msg)}
+						onSuccess={(msg) => displaySuccessToast(msg)}
 						onToggleTheme={toggleTheme}
 						theme={theme}
 					/>
