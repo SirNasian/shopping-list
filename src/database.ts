@@ -9,9 +9,19 @@ const dbPool = mariadb.createPool({
 
 export interface Item {
 	ID: number;
-	Name: string;
-	Obtained: boolean;
+	Name?: string;
+	Obtained?: boolean;
 }
+
+export const createItem = async (item: Item): Promise<number> => {
+	return Number(
+		(
+			await dbPool.execute(
+				`INSERT INTO \`items\` (\`Name\`, \`Obtained\`) VALUES ("${item.Name}", 0)`
+			)
+		).insertId
+	);
+};
 
 export const deleteItem = async (itemID: number): Promise<boolean> => {
 	await dbPool.execute(`DELETE FROM \`items\` WHERE \`ID\` = ${itemID}`);
@@ -32,32 +42,26 @@ export const setup = async (): Promise<void> => {
 	`);
 };
 
-export const updateItems = async (items: Item[]): Promise<boolean> => {
-	const queries = items.map((item: Item) => {
-		if (item.ID === -1 && item.Name !== undefined)
-			return `INSERT INTO \`items\` (\`Name\`, \`Obtained\`) VALUES ("${item.Name}", 0)`;
-
-		if (
-			item.ID !== undefined &&
-			(item.Name !== undefined || item.Obtained !== undefined)
-		)
-			return `
-			UPDATE \`items\` SET
-			${item.Name === undefined ? `` : `\`Name\` = "${item.Name}"`}
-			${item.Obtained === undefined ? `` : `\`Obtained\` = ${item.Obtained ? 1 : 0}`}
-			WHERE \`ID\` = ${item.ID}
-		`;
-	});
-
+export const updateItem = async (item: Item): Promise<boolean> => {
+	if (!item.ID || (item.Name === undefined && item.Obtained === undefined))
+		return false;
 	return await dbPool
-		.execute(queries.join(";"))
+		.execute(
+			`
+				UPDATE \`items\` SET
+				${item.Name === undefined ? `` : `\`Name\` = "${item.Name}"`}
+				${item.Obtained === undefined ? `` : `\`Obtained\` = ${item.Obtained ? 1 : 0}`}
+				WHERE \`ID\` = ${item.ID}
+			`
+		)
 		.then(() => true)
 		.catch(() => false);
 };
 
 export default {
+	createItem: createItem,
 	deleteItem: deleteItem,
 	getItems: getItems,
 	setup: setup,
-	updateItems: updateItems,
+	updateItem: updateItem,
 };

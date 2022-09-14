@@ -8,6 +8,7 @@ import { Item } from "../../database";
 import ShoppingListEditModal from "./ShoppingListEditModal";
 import ShoppingListFooter from "./ShoppingListFooter";
 import ShoppingListTable from "./ShoppingListTable";
+import WebSocketMessage from "../../interfaces/WebSocketMessage";
 
 export const ShoppingList = ({
 	onError,
@@ -24,6 +25,36 @@ export const ShoppingList = ({
 	const [items, setItems] = React.useState<Item[]>(undefined);
 	const [selectedItem, setSelectedItem] = React.useState<Item>(undefined);
 
+	const ws = React.useRef(null);
+
+	React.useEffect(() => {
+		if (ws && items)
+			ws.current.onmessage = (event: { data: string }) => {
+				const msg: WebSocketMessage = JSON.parse(event.data);
+				switch (msg.action) {
+					case "createItem":
+						setItems([...items, msg.item]);
+						break;
+					case "deleteItem":
+						setItems(items.filter((item) => item.ID !== msg.item.ID));
+						break;
+					case "updateItem":
+						setItems(
+							items.map((item) =>
+								item.ID === msg.item.ID
+									? {
+											...item,
+											Name: msg.item?.Name ?? item.Name,
+											Obtained: msg.item?.Obtained ?? item.Obtained,
+									  }
+									: item
+							)
+						);
+						break;
+				}
+			};
+	}, [items, ws]);
+
 	React.useEffect(() => {
 		window
 			.fetch("/api/items")
@@ -33,6 +64,8 @@ export const ShoppingList = ({
 			})
 			.then((items) => setItems(items))
 			.catch((error) => onError(error.message));
+		ws.current = new WebSocket(`ws://${window.location.hostname}:3001`);
+		return () => ws.current.close();
 	}, []);
 
 	const clearItems = () => {
@@ -47,46 +80,36 @@ export const ShoppingList = ({
 					})
 					.catch((error) => onError(error.message))
 			);
-		// TODO: replace this local update with update over websockets
-		setItems(items.filter((item) => !item.Obtained));
 	};
 
 	const checkItem = (item: Item, checked: boolean) => {
 		window
-			.fetch("/api/items", {
-				method: "post",
+			.fetch(`/api/items/${item.ID}`, {
+				method: "put",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify([
-					{
-						ID: item.ID,
-						Obtained: checked,
-					},
-				]),
+				body: JSON.stringify({
+					ID: item.ID,
+					Obtained: checked,
+				}),
 			})
 			.then((res) => {
-				if (res.status !== 200) throw new Error(`Failed to update item "${item.Name}"`);
+				if (res.status !== 200)
+					throw new Error(`Failed to update item "${item.Name}"`);
 			})
 			.catch((error) => onError(error.message));
-		// TODO: replace this local update with update over websockets
-		setItems(
-			items.map((oldItem) =>
-				oldItem.ID === item.ID ? { ...oldItem, Obtained: checked } : oldItem
-			)
-		);
 	};
 
 	const deleteItem = (item: Item) => {
 		window
 			.fetch(`/api/items/${item.ID}`, { method: "delete" })
 			.then((res) => {
-				if (res.status !== 200) throw new Error(`Failed to delete item "${item.Name}"`);
+				if (res.status !== 200)
+					throw new Error(`Failed to delete item "${item.Name}"`);
 			})
 			.catch((error) => onError(error.message));
-		// TODO: replace this local update with update over websockets
-		setItems(items.filter((oldItem) => oldItem.ID !== item.ID));
 	};
 
 	const editItem = (item: Item, buttonCaption: string) => {
@@ -97,44 +120,25 @@ export const ShoppingList = ({
 
 	const editorModalSubmit = (itemName: string) => {
 		window
-			.fetch("/api/items", {
-				method: "post",
+			.fetch(`/api/items/${selectedItem?.ID ?? -1}`, {
+				method: "put",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify([
-					{
-						ID: selectedItem ? selectedItem.ID : -1,
-						Name: itemName,
-					},
-				]),
+				body: JSON.stringify({
+					ID: selectedItem?.ID ?? -1,
+					Name: itemName,
+				}),
 			})
 			.then((res) => {
 				if (res.status !== 200)
-					throw new Error(`Failed to ${selectedItem ? "update" : "create"} item "${
-						selectedItem?.Name ?? itemName
-					}"`);
-			})
-			.catch((error) => onError(error.message));
-		// TODO: replace this local update with update over websockets
-		setItems(
-			selectedItem
-				? [...items].map((item) => ({
-						...item,
-						Name: item === selectedItem ? itemName : item.Name,
-				  }))
-				: [
-						...items,
-						{
-							ID:
-								items.reduce((id, item) => (item.ID > id ? item.ID : id), 0) +
-								1,
-							Name: itemName,
-							Obtained: false,
-						},
-				  ]
-		);
+					throw new Error(
+						`Failed to ${selectedItem ? "update" : "create"} item "${
+							selectedItem?.Name ?? itemName
+						}"`
+					);
+			});
 		setEditorOpen(false);
 	};
 
