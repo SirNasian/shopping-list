@@ -19,6 +19,7 @@ export const ShoppingList = ({
 	onToggleTheme: () => void;
 	theme: Theme;
 }): JSX.Element => {
+	const [connected, setConnected] = React.useState<boolean>(false);
 	const [editorButtonCaption, setEditorButtonCaption] =
 		React.useState<string>("");
 	const [editorOpen, setEditorOpen] = React.useState<boolean>(false);
@@ -69,6 +70,8 @@ export const ShoppingList = ({
 		ws.current = new WebSocket(`ws://${window.location.hostname}:3001`);
 		ws.current.onmessage = (event: { data: string }) =>
 			updateItems(JSON.parse(event.data));
+		ws.current.onopen = () => setConnected(true);
+		ws.current.onclose = () => setConnected(false);
 		return () => ws.current.close();
 	}, []);
 
@@ -146,7 +149,7 @@ export const ShoppingList = ({
 		setEditorOpen(false);
 	};
 
-	return (
+	return connected ? (
 		<React.Fragment>
 			<Typography variant="h4" sx={{ margin: "1rem", textAlign: "center" }}>
 				Shopping List
@@ -173,6 +176,10 @@ export const ShoppingList = ({
 				open={editorOpen}
 			/>
 		</React.Fragment>
+	) : (
+		<Typography variant="h4" sx={{ margin: "1rem", textAlign: "center" }}>
+			Not Connected
+		</Typography>
 	);
 };
 
