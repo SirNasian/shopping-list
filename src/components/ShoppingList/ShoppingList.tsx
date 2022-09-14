@@ -22,49 +22,53 @@ export const ShoppingList = ({
 	const [editorButtonCaption, setEditorButtonCaption] =
 		React.useState<string>("");
 	const [editorOpen, setEditorOpen] = React.useState<boolean>(false);
-	const [items, setItems] = React.useState<Item[]>(undefined);
 	const [selectedItem, setSelectedItem] = React.useState<Item>(undefined);
 
-	const ws = React.useRef(null);
+	const ws = React.useRef<WebSocket>(null);
 
-	React.useEffect(() => {
-		if (ws && items)
-			ws.current.onmessage = (event: { data: string }) => {
-				const msg: WebSocketMessage = JSON.parse(event.data);
-				switch (msg.action) {
-					case "createItem":
-						setItems([...items, msg.item]);
-						break;
-					case "deleteItem":
-						setItems(items.filter((item) => item.ID !== msg.item.ID));
-						break;
-					case "updateItem":
-						setItems(
-							items.map((item) =>
-								item.ID === msg.item.ID
-									? {
-											...item,
-											Name: msg.item?.Name ?? item.Name,
-											Obtained: msg.item?.Obtained ?? item.Obtained,
-									  }
-									: item
-							)
-						);
-						break;
-				}
-			};
-	}, [items, ws]);
+	const [items, updateItems] = React.useReducer(
+		(items: Item[], msg: WebSocketMessage) => {
+			items = items ?? [];
+			switch (msg.action) {
+				case "createItem":
+					return [...items, msg.item];
+				case "deleteItem":
+					return items.filter((item) => item.ID !== msg.item.ID);
+				case "updateItem":
+					return items.map((item) =>
+						item.ID === msg.item.ID
+							? {
+									...item,
+									Name: msg.item?.Name ?? item.Name,
+									Obtained: msg.item?.Obtained ?? item.Obtained,
+							  }
+							: item
+					);
+				default:
+					return items;
+			}
+		},
+		undefined
+	);
 
 	React.useEffect(() => {
 		window
 			.fetch("/api/items")
-			.then((res) => {
+			.then<Item[]>((res) => {
 				if (res.status !== 200) throw new Error("Failed to load items");
 				return res.json();
 			})
-			.then((items) => setItems(items))
+			.then((items) =>
+				items.length > 0
+					? items.forEach((item) =>
+							updateItems({ action: "createItem", item: item })
+					  )
+					: updateItems({ action: undefined, item: undefined })
+			)
 			.catch((error) => onError(error.message));
 		ws.current = new WebSocket(`ws://${window.location.hostname}:3001`);
+		ws.current.onmessage = (event: { data: string }) =>
+			updateItems(JSON.parse(event.data));
 		return () => ws.current.close();
 	}, []);
 
